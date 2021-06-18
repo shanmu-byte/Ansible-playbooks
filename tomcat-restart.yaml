@@ -1,0 +1,44 @@
+- name : tomcat restart
+  hosts: test_servers
+  tasks:
+    - name: Search for running process
+      become: yes
+      become_user: res2
+      shell: ps -ef | grep res2 > process-lst
+      args:
+        chdir: /home/res2      
+
+    - name: count the number of process
+      become: yes
+      become_user: res2
+      shell: cat process-lst | grep tomcat | grep -v grep | wc -l
+      args:
+        chdir: /home/res2
+      register: result
+
+    - name: Disable tomcat
+      become: yes
+      become_user: res2
+      shell: sh shutdown.sh
+      args:
+        chdir: /opt/int1/apache-tomcat-8.5.41/bin
+      when: result != 0
+      register: tomstop
+
+    - name: Enable tomcat
+      become: yes
+      become_user: res2
+      command: nohup sh startup.sh &
+      args:
+        chdir: /opt/int1/apache-tomcat-8.5.41/bin
+      when: result != 0
+      register: tomstart
+
+    - name: Check for tomcat stop
+      debug:
+         var: tomstop
+
+    - name: Check for tomcat start
+      debug:
+         var: tomstart
+
