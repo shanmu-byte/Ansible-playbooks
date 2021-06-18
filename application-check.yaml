@@ -46,7 +46,7 @@
       when: "'mac' in application"
       register: MAC
     
-	- name: Write results to MAC logfile
+    - name: Write results to MAC logfile
       blockinfile:
         create: yes
         path: "/tmp/map_logs/mac"
