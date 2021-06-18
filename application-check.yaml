@@ -1,0 +1,111 @@
+- name: map-checkout
+  hosts: "{{Environment}}"
+  vars_prompt:
+    name: application
+    prompt: Enter application name
+
+  tasks:
+
+    - name: SOE
+      shell: sh /home/muaccess/soe-scripts/check.status.sh
+      when: "'soe' in application"
+      register: SOE
+
+    - name: Write results to SOE logfile
+      blockinfile:
+        create: yes
+        path: "/tmp/map_logs/soe"
+        mode: 0777
+        backup: yes
+        insertafter: BOF
+        block: "{{ SOE.stdout }}"
+        marker: "# {{ inventory_hostname }} {mark}"
+      when: "'soe' in application"
+      delegate_to: localhost
+
+
+    - name: SMA
+      shell: sh /home/muaccess/sma-scripts/check.status.sh
+      when: "'sma' in application"
+      register: SMA
+
+    - name: Write results to SMA logfile
+      blockinfile:
+        create: yes
+        path: "/tmp/map_logs/sma"
+        mode: 0777
+        backup: yes
+        insertafter: BOF
+        block: "{{ SMA.stdout }}"
+        marker: "# {{ inventory_hostname }} {mark}"
+      when: "'sma' in application"
+      delegate_to: localhost
+
+    - name: MAC
+      shell: sh /home/muaccess/ma-scripts/check.status.sh
+      when: "'mac' in application"
+      register: MAC
+    
+	- name: Write results to MAC logfile
+      blockinfile:
+        create: yes
+        path: "/tmp/map_logs/mac"
+        mode: 0777
+        backup: yes
+        insertafter: BOF
+        block: "{{ MAC.stdout }}"
+        marker: "# {{ inventory_hostname }} {mark}"
+      when: "'mac' in application"
+      delegate_to: localhost
+
+
+    - name: DAP
+      shell: sh /home/muaccess/dap-scripts/check.status.sh
+      when: "'dap' in application"
+      register: DAP
+
+    - name: Write results to DAP logfile
+      blockinfile:
+        create: yes
+        path: "/tmp/map_logs/dap"
+        mode: 0777
+        backup: yes
+        insertafter: BOF
+        block: "{{ DAP.stdout }}"
+        marker: "# {{ inventory_hostname }} {mark}"
+      when: "'dap' in application"
+      delegate_to: localhost
+
+    - name: CGW
+      shell: sh /home/muaccess/conngtwy-scripts/check.status.sh
+      when: "'cgw' in application"
+      register: CGW
+
+    - name: Write results to CGW logfile
+      blockinfile:
+        create: yes
+        path: "/tmp/map_logs/cgw"
+        mode: 0777
+        backup: yes
+        insertafter: BOF
+        block: "{{ CGW.stdout }}"
+        marker: "# {{ inventory_hostname }} {mark}"
+      when: "'cgw' in application"
+      delegate_to: localhost
+	  
+    - name: GUI
+      shell: sh /home/muaccess/gui-scripts/check.status.sh
+      when: "'gui' in application"
+      register: GUI
+
+    - name: Write results to GUI logfile
+      blockinfile:
+        create: yes
+        path: "/tmp/map_logs/gui"
+        mode: 0777
+        backup: yes
+        insertafter: BOF
+        block: "{{ GUI.stdout }}"
+        marker: "# {{ inventory_hostname }} {mark}"
+      when: "'gui' in application"
+      delegate_to: localhost
