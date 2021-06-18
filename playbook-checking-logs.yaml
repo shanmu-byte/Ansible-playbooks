@@ -1,0 +1,46 @@
+---
+- name: Execute a script from host
+  hosts: "{{ Environment }}"
+
+
+  tasks:
+
+
+    - name: copy script from local to remote
+      copy:
+        src: /login/sg302434/MOM-ehotels/check-script_backup.sh
+        dest: /tmp/test/check-script_backup.sh
+        mode: 0755
+      register: copy
+
+    - name: Verifying file in locaion of the remote
+      command: ls -lrt
+      args:
+        chdir: /tmp/test
+      register: copy
+
+    - name: Verifying copy
+      debug:
+        msg: "{{ copy.stdout.split('\n') }}"
+
+    - name: executing script in remote
+      command: ./check-script_backup.sh "{{filename}}" "{{date}}" "{{queue}}"
+      args:
+        chdir: /tmp/test
+      register: result
+
+
+    - name: Verifying result
+      debug:
+        msg: "{{ result.stdout.split('\n') }}"
+
+    - name: Write results to logfile
+      blockinfile:
+        create: yes
+        path: "/tmp/logfolder/log"
+        mode: 0777
+        backup: yes
+        insertafter: BOF
+        block: "{{ result.stdout }}"
+        marker: "# {{ inventory_hostname }} {mark}"
+      delegate_to: localhost
