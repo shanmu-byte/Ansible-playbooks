@@ -8,15 +8,15 @@
 
     - name: copy script from local to remote
       copy:
-        src: /login/sg302434/MOM-ehotels/check-script_backup.sh
-        dest: /tmp/test/check-script_backup.sh
+        src: *hidden*
+        dest: *hidden*
         mode: 0755
       register: copy
 
     - name: Verifying file in locaion of the remote
       command: ls -lrt
       args:
-        chdir: /tmp/test
+        chdir: *hidden*
       register: copy
 
     - name: Verifying copy
@@ -24,7 +24,7 @@
         msg: "{{ copy.stdout.split('\n') }}"
 
     - name: executing script in remote
-      command: ./check-script_backup.sh "{{filename}}" "{{date}}" "{{queue}}"
+      command: ./*hidden* "{{filename}}" "{{date}}" "{{queue}}"
       args:
         chdir: /tmp/test
       register: result
@@ -37,10 +37,12 @@
     - name: Write results to logfile
       blockinfile:
         create: yes
-        path: "/tmp/logfolder/log"
+        path: "*hidden*"
         mode: 0777
         backup: yes
         insertafter: BOF
         block: "{{ result.stdout }}"
         marker: "# {{ inventory_hostname }} {mark}"
       delegate_to: localhost
+      
+      #paths and name of thet scripts are *hidden* due to security reasons
