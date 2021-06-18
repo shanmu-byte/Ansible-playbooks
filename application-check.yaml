@@ -92,11 +92,6 @@
         marker: "# {{ inventory_hostname }} {mark}"
       when: "'cgw' in application"
       delegate_to: localhost
-	  
-    - name: GUI
-      shell: sh /home/muaccess/gui-scripts/check.status.sh
-      when: "'gui' in application"
-      register: GUI
 
     - name: Write results to GUI logfile
       blockinfile:
