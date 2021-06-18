@@ -7,14 +7,14 @@
   tasks:
 
     - name: SOE
-      shell: sh /home/muaccess/soe-scripts/check.status.sh
+      shell: sh *hidden*
       when: "'soe' in application"
       register: SOE
 
     - name: Write results to SOE logfile
       blockinfile:
         create: yes
-        path: "/tmp/map_logs/soe"
+        path: "*hidden*"
         mode: 0777
         backup: yes
         insertafter: BOF
@@ -25,14 +25,14 @@
 
 
     - name: SMA
-      shell: sh /home/muaccess/sma-scripts/check.status.sh
+      shell: sh *hidden*
       when: "'sma' in application"
       register: SMA
 
     - name: Write results to SMA logfile
       blockinfile:
         create: yes
-        path: "/tmp/map_logs/sma"
+        path: "*hidden*"
         mode: 0777
         backup: yes
         insertafter: BOF
@@ -42,14 +42,14 @@
       delegate_to: localhost
 
     - name: MAC
-      shell: sh /home/muaccess/ma-scripts/check.status.sh
+      shell: sh *hidden*
       when: "'mac' in application"
       register: MAC
     
     - name: Write results to MAC logfile
       blockinfile:
         create: yes
-        path: "/tmp/map_logs/mac"
+        path: "*hidden*"
         mode: 0777
         backup: yes
         insertafter: BOF
@@ -60,14 +60,14 @@
 
 
     - name: DAP
-      shell: sh /home/muaccess/dap-scripts/check.status.sh
+      shell: sh *hidden*
       when: "'dap' in application"
       register: DAP
 
     - name: Write results to DAP logfile
       blockinfile:
         create: yes
-        path: "/tmp/map_logs/dap"
+        path: "*hidden*"
         mode: 0777
         backup: yes
         insertafter: BOF
@@ -77,14 +77,14 @@
       delegate_to: localhost
 
     - name: CGW
-      shell: sh /home/muaccess/conngtwy-scripts/check.status.sh
+      shell: sh *hidden*
       when: "'cgw' in application"
       register: CGW
 
     - name: Write results to CGW logfile
       blockinfile:
         create: yes
-        path: "/tmp/map_logs/cgw"
+        path: "*hidden*"
         mode: 0777
         backup: yes
         insertafter: BOF
@@ -96,7 +96,7 @@
     - name: Write results to GUI logfile
       blockinfile:
         create: yes
-        path: "/tmp/map_logs/gui"
+        path: "*hidden*"
         mode: 0777
         backup: yes
         insertafter: BOF
@@ -104,3 +104,5 @@
         marker: "# {{ inventory_hostname }} {mark}"
       when: "'gui' in application"
       delegate_to: localhost
+      
+      #paths are *hidden* due to security reasons
