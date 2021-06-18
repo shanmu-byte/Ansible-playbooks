@@ -10,7 +10,7 @@ else
 
 echo -e "\033[1;36m" Kindly find the application status: "\033[0m"
 
-cat /tmp/logfolder/log |awk '{ gsub("re-established", "\033[1;32m&\033[0m");
+cat *hidden* |awk '{ gsub("re-established", "\033[1;32m&\033[0m");
                          gsub("lost", "\033[1;31m&\033[0m"); gsub("'$queue'", "\033[1;33m&\033[0m"); print }' |awk '
         BEGIN {
             FPAT = "([[:space:]]*[^[:space:]]+)";
@@ -23,3 +23,5 @@ cat /tmp/logfolder/log |awk '{ gsub("re-established", "\033[1;32m&\033[0m");
 print
         }'
 fi
+
+#file path is *hidden* due to security reason
