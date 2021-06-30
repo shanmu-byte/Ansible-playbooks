@@ -1,0 +1,28 @@
+---
+
+- name : check for volume group and create logical volume
+  hosts : all
+  ignore_errors : yes
+  tasks :
+   - name : Check for volume group research
+     command : vgdisplay research
+     register : vginfo
+
+   - debug : msg='volume group research not found'
+     when : vginfo is failed
+
+   - name : create logical volum of 1500 MB
+     lvol : lv=data vg=research size=1500M
+     when : vginfo is success
+     register : lv1
+
+   - debug : msg='Insufficient size of vg'
+     when :  lv1 is failed
+
+   - name : create logical volum of 800 MB
+     lvol : lv=data vg=research size=800M
+     when : lv1 is failed
+
+   - name : Create a filesystem for logical volume
+     filesystem : dev=/dev/research/data fstype=ext3 force=yes
+     when : lv1 is success

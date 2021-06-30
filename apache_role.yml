@@ -1,0 +1,6 @@
+---
+- name : Trigger the role named apache
+  hosts : dev
+  roles:
+   - apache
+              

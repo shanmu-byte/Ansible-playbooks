@@ -1,0 +1,27 @@
+---
+
+- name : Create users and groups as per var files
+  hosts : all
+  vars_files :
+   - user_list.yml
+   - vault.yml
+  tasks :
+   - name : Create group 1
+     group : name=devops state=present
+     when : inventory_hostname in groups['dev'] or inventory_hostname in groups['test']
+
+   - name : Create group 2
+     group : name=manager state=present
+     when : inventory_hostname in groups['test']
+
+   - name : create user 1
+     user : name={{ item.name }} state=present group=devops password={{ pw_developer | password_hash('sha512') }}
+     loop :
+      "{{ users }}"
+     when : item.job == "developer" and (inventory_hostname in groups['dev'] or inventory_hostname in groups['test'])
+
+   - name : create user 2
+     user : name={{ item.name }} state=present group=manager password={{ pw_manager | password_hash('sha512') }}
+     loop :
+       "{{ users }}"
+     when : item.job == "manager" and inventory_hostname in groups['test']

@@ -1,0 +1,11 @@
+---
+
+- name : trigger balancer role
+  hosts : balancers
+  roles :
+   - balancer
+
+- name : trigger phpinfo role
+  hosts : webservers
+  roles :
+   - phpinfo

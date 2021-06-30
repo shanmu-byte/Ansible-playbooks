@@ -1,0 +1,16 @@
+---
+
+- name : Replace the file /etc/issue on all managed nodes.
+  hosts : all
+  tasks :
+   - name : Replace the content in development
+     copy : content='Development' dest=/etc/issue
+     when : inventory_hostname in groups['dev']
+
+   - name : Replace the content in test
+     copy : content='Test' dest=/etc/issue
+     when : inventory_hostname in groups['test']
+
+   - name : Replace the content in Production
+     copy : content='Production' dest=/etc/issue
+     when : inventory_hostname in groups['prod']

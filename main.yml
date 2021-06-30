@@ -1,0 +1,18 @@
+---
+# tasks file for /home/student/ansible/roles/apache
+
+- name : Install httpd package
+  yum  : pkg=httpd state=present
+
+- name : Enable httpd service
+  service : name=httpd state=started enabled=yes
+
+- name : Enable firewalld service
+  service : name=firewalld state=started enabled=yes
+
+- name : Firewall connection setup with httpd
+  firewalld : service=http state=enabled permanent=true immediate=yes
+
+- name : copy the content from a template
+  template : src=/home/student/ansible/roles/apache/templates/template.j2 dest=/var/www/html/index.html
+~                                                                                                        

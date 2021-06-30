@@ -1,0 +1,10 @@
+---
+
+- name : Setup NTP in all nodes
+  hosts : all
+  vars :
+    timesync_ntp_server :
+     - host : classroom.example.com
+       iburst : yes
+  roles :
+   - /usr/share/ansible/roles/rhel-system-roles.timesync

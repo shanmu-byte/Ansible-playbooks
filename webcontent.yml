@@ -1,0 +1,16 @@
+---
+
+- name : Create directory /webdev and install webpage in the same
+  hosts : dev
+  tasks :
+   - name : Create directory /webdev
+     file : path=/webdev state=directory mode=02755 setype=httpd_sys_content_t
+
+   - name : create a index file
+     file : path=/webdev/index.html state=touch
+
+   - name : Copy content inside the file index.html
+     copy : content='Development\n' dest=/webdev/index.html
+
+   - name : link the html path to the created directory
+     file : src=/webdev dest=/var/www/html/webdev state=link

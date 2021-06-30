@@ -1,0 +1,23 @@
+---
+
+- name : Install php and mariadb in dev and test
+  hosts : dev,test
+  tasks :
+   - name : Install php in dev and test
+     yum : pkg=php state=present
+
+   - name : Install mariadb in dev and test
+     yum : pkg=mariadb-server state=present
+
+
+- name : Install Development Tools group package in prod group.
+  hosts : prod
+  tasks :
+   - name : Development Tools group package
+     yum : pkg='@Development Tools' state=present
+
+- name : Update the packages
+  hosts : dev
+  tasks :
+   - name :  Update all packages in dev group
+     yum : pkg='*' state=latest
